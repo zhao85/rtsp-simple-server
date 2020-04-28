@@ -55,6 +55,7 @@ type program struct {
 	publishUser string
 	publishPass string
 	preScript   string
+	descScript  string
 	postScript  string
 	mutex       sync.RWMutex
 	rtspl       *serverTcpListener
@@ -76,6 +77,7 @@ func newProgram() (*program, error) {
 	argPublishUser := kingpin.Flag("publish-user", "optional username required to publish").Default("").String()
 	argPublishPass := kingpin.Flag("publish-pass", "optional password required to publish").Default("").String()
 	argPreScript := kingpin.Flag("pre-script", "optional script to run on client connect").Default("").String()
+	argDescScript := kingpin.Flag("desc-script", "optional script to run on client describe").Default("").String()
 	argPostScript := kingpin.Flag("post-script", "optional script to run on client disconnect").Default("").String()
 
 	kingpin.Parse()
@@ -88,6 +90,7 @@ func newProgram() (*program, error) {
 	publishUser := *argPublishUser
 	publishPass := *argPublishPass
 	preScript := *argPreScript
+	descScript := *argDescScript
 	postScript := *argPostScript
 
 	if version == true {
@@ -158,6 +161,7 @@ func newProgram() (*program, error) {
 		publishUser: publishUser,
 		publishPass: publishPass,
 		preScript:   preScript,
+		descScript:  descScript,
 		postScript:  postScript,
 		clients:     make(map[*client]struct{}),
 		publishers:  make(map[string]*client),
