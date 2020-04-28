@@ -297,18 +297,15 @@ func (c *client) handleRequest(req *gortsplib.Request) bool {
 			c.writeResError(req, fmt.Errorf("client is in state '%d'", c.state))
 			return false
 		}
-		
 		// run describe script when describing
 		if c.p.descScript != "" {
 			descScript := exec.Command(c.p.descScript)
-			descScript.Env = append(os.Environ(), "", "PATH="+path)
+			descScript.Env = append(os.Environ(), "", "URLPATH="+path)
 			err := descScript.Run()
 			if err != nil {
 				c.log("ERR: %s", err)
 			}
 		}
-		
-		
 
 		sdp, err := func() ([]byte, error) {
 			c.p.mutex.RLock()
