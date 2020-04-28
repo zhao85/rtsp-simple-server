@@ -299,7 +299,8 @@ func (c *client) handleRequest(req *gortsplib.Request) bool {
 		
 		// run describe script when describing
 		if c.p.descScript != "" {
-			descScript := exec.Command("URLPATH=" + path + " " + c.p.descScript)
+			descScript := exec.Command(c.p.descScript)
+			descScript.Env = append(os.Environ(), "", "PATH="+path)
 			err := descScript.Run()
 			if err != nil {
 				c.log("ERR: %s", err)
